@@ -2,38 +2,58 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>CGT – Reconquête terrain (ACI)</title>
+  <title>CGT – Reconquête territoriale ACI</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f2f2f2;
-      margin: 0;
-    }
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
 
-    /* ===== Bandeau CGT ===== */
-    header {
-      background: #c80000;
-      color: white;
-      padding: 12px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+<body>
 
-    header img {
-      height: 60px;
-      background: white;
-      padding: 4px;
-      border-radius: 4px;
-    }
+<header class="cgt-header">
+  <img src="logo-cgt.png" class="logo">
+  <div class="header-text">
+    <h1>CGT – Reconquête territoriale</h1>
+    <p>ACI • Pilotage syndical du terrain</p>
+  </div>
+</header>
 
-    header .titre {
-      line-height: 1.2;
-    }
+<main>
 
-    header .titre h1 {
+  <section class="bloc">
+    <h2>Ajouter une structure</h2>
+
+    <input id="nom" placeholder="Nom de la structure">
+    <input id="commune" placeholder="Commune">
+    <input id="lat" placeholder="Latitude (ex: 47.280)">
+    <input id="lng" placeholder="Longitude (ex: -2.209select id="priorite">
+      <option value="faible">Priorité faible</option>
+      <option value="moyenne">Priorité moyenne</option>
+      <option value="haute">Priorité élevée</option>
+    </select>
+
+    <input id="election" placeholder="Échéance élections (ex: 2025)">
+
+    <button onclick="ajouterStructure()">➕ Enregistrer</button>
+  </section>
+
+  <section class="bloc">
+    <h2>Carte de reconquête</h2>
+    <div id="map"></div>
+  </section>
+
+  <section class="bloc">
+    <h2>Tableau terrain</h2>
+    <div id="liste"></div>
+  </section>
+
+</main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
       margin: 0;
       font-size: 1.3em;
     }
