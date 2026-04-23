@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>CGT Reconquête – Tableau terrain</title>
+  <title>CGT – Reconquête terrain (ACI)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
@@ -10,30 +10,190 @@
       font-family: Arial, sans-serif;
       background: #f2f2f2;
       margin: 0;
-      padding: 10px;
     }
-    h1 { font-size: 1.4em; }
+
+    /* ===== Bandeau CGT ===== */
+    header {
+      background: #c80000;
+      color: white;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    header img {
+      height: 60px;
+      background: white;
+      padding: 4px;
+      border-radius: 4px;
+    }
+
+    header .titre {
+      line-height: 1.2;
+    }
+
+    header .titre h1 {
+      margin: 0;
+      font-size: 1.3em;
+    }
+
+    header .titre p {
+      margin: 2px 0 0;
+      font-size: 0.95em;
+      opacity: 0.9;
+    }
+
+    /* ===== Contenu ===== */
+    main {
+      padding: 12px;
+    }
+
     .bloc {
       background: white;
       border: 1px solid #ccc;
-      padding: 10px;
-      margin-bottom: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+      border-radius: 4px;
     }
+
+    .bloc h2 {
+      margin-top: 0;
+      font-size: 1.1em;
+      color: #c80000;
+    }
+
     input, button {
       width: 100%;
-      padding: 8px;
+      padding: 10px;
       margin-top: 6px;
+      box-sizing: border-box;
+      font-size: 1em;
+    }
+
+    button {
+      background: #c80000;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    button:hover {
+      background: #a90000;
+    }
+
+    .fiche {
+      border-left: 6px solid #c80000;
+    }
+
+    .fiche strong {
+      font-size: 1.05em;
+    }
+
+    .actions {
+      margin-top: 8px;
+    }
+
+    .actions button {
+      background: #555;
     }
   </style>
 </head>
 
 <body>
 
-<h1>CGT Reconquête – tableau terrain</h1>
+<header>
+  logo-cgt.png
+  <div class="titre">
+    <h1>CGT – Reconquête terrain</h1>
+    <p>Outil syndical de repérage des structures ACI</p>
+  </div>
+</header>
 
-<div class="bloc">
-  <input id="nom" placeholder="Nom de la structure">
-  <input id="secteur" placeholder="Secteur (ACI, régie…)">
+<main>
+
+  <div class="bloc">
+    <h2>Ajouter une structure</h2>
+
+    <input id="nom" placeholder="Nom de la structure">
+    <input id="secteur" placeholder="Secteur (ACI, régie, insertion…)">
+    <input id="commune" placeholder="Commune">
+
+    <button onclick="ajouter()">➕ Ajouter la structure</button>
+  </div>
+
+  <div class="bloc">
+    <h2>Structures recensées</h2>
+    <div id="liste"></div>
+  </div>
+
+</main>
+
+<script>
+  let structures = JSON.parse(localStorage.getItem("reconquete_cgt") || "[]");
+
+  function sauver() {
+    localStorage.setItem("reconquete_cgt", JSON.stringify(structures));
+  }
+
+  function afficher() {
+    const zone = document.getElementById("liste");
+    zone.innerHTML = "";
+
+    if (structures.length === 0) {
+      zone.innerHTML = "<em>Aucune structure recensée pour l’instant.</em>";
+      return;
+    }
+
+    structures.forEach((s, i) => {
+      const div = document.createElement("div");
+      div.className = "bloc fiche";
+      div.innerHTML = `
+        <strong>${s.nom}</strong><br>
+        ${s.secteur} – ${s.commune}
+        <div class="actions">
+          <button onclick="supprimer(${i})">Supprimer</button>
+        </div>
+      `;
+      zone.appendChild(div);
+    });
+  }
+
+  function ajouter() {
+    const nom = document.getElementById("nom").value.trim();
+    if (!nom) {
+      alert("Le nom de la structure est obligatoire");
+      return;
+    }
+
+    structures.push({
+      nom,
+      secteur: document.getElementById("secteur").value,
+      commune: document.getElementById("commune").value
+    });
+
+    sauver();
+
+    document.getElementById("nom").value =
+    document.getElementById("secteur").value =
+    document.getElementById("commune").value = "";
+
+    afficher();
+  }
+
+  function supprimer(i) {
+    if (!confirm("Supprimer cette structure ?")) return;
+    structures.splice(i, 1);
+    sauver();
+    afficher();
+  }
+
+  afficher();
+</script>
+
+</body>
+</html>
   <input id="commune" placeholder="Commune">
   <button onclick="ajouter()">➕ Ajouter</button>
 </div>
