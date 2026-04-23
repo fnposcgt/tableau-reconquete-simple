@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>CGT Reconquête – Tableau terrain</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      margin: 0;
+      padding: 10px;
+    }
+    h1 { font-size: 1.4em; }
+    .bloc {
+      background: white;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 8px;
+    }
+    input, button {
+      width: 100%;
+      padding: 8px;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>CGT Reconquête – tableau terrain</h1>
+
+<div class="bloc">
+  <input id="nom" placeholder="Nom de la structure">
+  <input id="secteur" placeholder="Secteur (ACI, régie…)">
+  <input id="commune" placeholder="Commune">
+  <button onclick="ajouter()">➕ Ajouter</button>
+</div>
+
+<div id="liste"></div>
+
+<script>
+  let structures = JSON.parse(localStorage.getItem("reconquete") || "[]");
+
+  function sauver() {
+    localStorage.setItem("reconquete", JSON.stringify(structures));
+  }
+
+  function afficher() {
+    const zone = document.getElementById("liste");
+    zone.innerHTML = "";
+    structures.forEach((s, i) => {
+      const div = document.createElement("div");
+      div.className = "bloc";
+      div.innerHTML = `
+        <strong>${s.nom}</strong><br>
+        ${s.secteur} – ${s.commune}<br>
+       ">Supprimer</button>
+      `;
+      zone.appendChild(div);
+    });
+  }
+
+  function ajouter() {
+    const nom = document.getElementById("nom").value.trim();
+    if (!nom) {
+      alert("Nom obligatoire");
+      return;
+").value
+    });
+    sauver();
+    document
+    
