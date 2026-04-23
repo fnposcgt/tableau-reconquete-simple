@@ -1,0 +1,60 @@
+let structures = JSON.parse(localStorage.getItem("cgt_reconquete") || "[]");
+
+function sauvegarder() {
+  localStorage.setItem("cgt_reconquete", JSON.stringify(structures));
+}
+
+function afficher() {
+  const zone = document.getElementById("liste");
+  zone.innerHTML = "";
+
+  if (structures.length === 0) {
+    zone.innerHTML = "<em>Aucune structure recensée.</em>";
+    return;
+  }
+
+  structures.forEach((s, i) => {
+    const div = document.createElement("div");
+    div.className = `bloc fiche priorite-${s.priorite}`;
+
+    div.innerHTML = `
+      <strong>${s.nom}</strong><br>
+      ${s.secteur} – ${s.commune}<br>
+      <em>Priorité : ${s.priorite}</em><br><br>
+      <button onclick="supprimer(${i})">Supprimer</button>
+    `;
+
+    zone.appendChild(div);
+  });
+}
+
+function ajouterStructure() {
+  const nom = document.getElementById("nom").value.trim();
+  if (!nom) {
+    alert("Le nom est obligatoire");
+    return;
+  }
+
+  structures.push({
+    nom,
+    secteur: document.getElementById("secteur").value,
+    commune: document.getElementById("commune").value,
+    priorite: document.getElementById("priorite").value
+  });
+
+  sauvegarder();
+  afficher();
+
+  document.getElementById("nom").value = "";
+  document.getElementById("secteur").value = "";
+  document.getElementById("commune").value = "";
+}
+
+function supprimer(i) {
+  if (!confirm("Supprimer cette structure ?")) return;
+  structures.splice(i, 1);
+  sauvegarder();
+  afficher();
+}
+
+afficher();
